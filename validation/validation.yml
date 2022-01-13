@@ -1,0 +1,20 @@
+package: System Environment
+working_dir: '.'
+output_dir: '.'
+report_rmd_name: validation.Rmd
+report_naming_format: Validation_Report_{package}_v{version}_{date}
+usernames:
+  eli.miller:
+    name: Eli Miller
+    title: Developer
+    role: Validation Lead, Validator
+validation_files:
+- R-Base/requirements.md
+- R-Base/cases.md
+- R-Base/tests.R
+- Tplyr/requirements.md
+- Tplyr/cases.md
+- Tplyr/tests.R
+- dplyr/requirements.md
+- dplyr/cases.md
+- dplyr/tests.R

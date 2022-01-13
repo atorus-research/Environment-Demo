@@ -1,0 +1,171 @@
+---
+title: "Validation Report for Demo Environment Validation"
+author: "Eli Miller"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: 
+    toc: yes
+    fig_crop: no
+    toc_depth: 2
+    number_sections: yes
+vignette: |
+  %\VignetteIndexEntry{Validation Report} \usepackage[utf8]{inputenc} %\VignetteEngine{knitr::rmarkdown_notangle}
+header-includes:
+- \usepackage{array}
+- \usepackage{float}
+- \usepackage{multirow}
+- \usepackage{longtable}
+- \usepackage{booktabs}
+- \usepackage{xcolor}
+always_allow_html: yes
+---
+
+
+```{r, setup, echo=FALSE,warning=FALSE}
+suppressPackageStartupMessages({
+  library(valtools)
+  library(knitr)
+  library(kableExtra)
+  library(magrittr)
+  library(devtools)
+  library(tools)
+  library(stringr)
+  library(dplyr)
+  library(riskmetric)
+  library(renv)
+})
+
+opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE,
+  echo = FALSE,
+  results = "asis",
+  message = FALSE,
+  tidy = FALSE,
+  rmarkdown.pandoc.to = "latex"
+)
+
+options(
+  knitr.kable.NA = '',
+  knitr.duplicate.label = "allow"
+)
+
+```
+
+
+\newpage
+
+# Release details
+
+## Package Information
+
+### Change Log
+
+```{r change-log-table}
+vt_scrape_change_log() %>% 
+  vt_kable_change_log()
+```
+
+### Validation Environment
+
+```{r env-table}
+vt_scrape_val_env() %>%
+  vt_kable_val_env()
+```
+
+\clearpage
+
+## Authors
+
+### Requirements 
+
+
+```{r req-authors}
+vt_scrape_requirement_editors() %>% 
+  vt_kable_requirement_editors()
+```
+
+### Test Case Authors
+
+```{r test-case-authors}
+vt_scrape_test_case_editors() %>%
+ vt_kable_test_case_editors()
+```
+
+### Test Code Authors
+
+```{r test-code-authors}
+vt_scrape_test_code_editors() %>%
+ vt_kable_test_code_editors()
+```
+
+## Traceability
+
+```{r traceability}
+vt_scrape_coverage_matrix() %>% 
+ vt_kable_coverage_matrix()
+```
+
+\clearpage
+
+# Risk Assessment
+
+## Requirement Assessments
+
+```{r risk}
+vt_scrape_risk_assessment() %>% 
+  vt_kable_risk_assessment()
+```
+
+## Package Assessments
+
+This table displays the riskmetric score of the `dplyr` and `Tplyr` packages. Other packages can be added as needed.
+
+```{r riskmetric}
+scores <- c("Tplyr", "dplyr") %>%
+  pkg_ref() %>%
+  pkg_assess() %>%
+  pkg_score() %>%
+  summarize_scores()
+
+df <-   data.frame(
+    Package = c("Tplyr", "dplyr"),
+  "riskmetric Scores" = scores)
+
+t <- kable(
+  df,
+  longtable = TRUE)
+t <- column_spec(t, 1, border_left = TRUE)
+t <- column_spec(t, ncol(df), border_right = TRUE)
+t <- collapse_rows(t, c(1))
+t <- kable_styling(t, latex_options = "hold_position")
+t
+
+```
+
+\clearpage
+
+# Validation
+
+```{r child-files-evaluation}
+df <- data.frame(
+  x = c("requirements", "test_cases", "test_code"),
+  y = c("requirements.md", "cases.md", "tests.R")
+)
+child_files <- vt_get_child_files() %>%
+  str_split("/", simplify = TRUE) %>%
+  as.data.frame() %>%
+  arrange(V2) %>%
+  mutate(V1 = factor(V1, c("requirements", "test_cases", "test_code"))) %>%
+  filter(V2 != "_snaps") %>%
+  left_join(df, by = c(V1 = "x"))
+ch_files <- paste(child_files$V1, child_files$V2, child_files$y, sep = "/")
+vt_file(vt_path(ch_files),dynamic_referencing = FALSE)
+```
+## Installed System Packages
+```md
+```{r, installed-packages, results='asis'}
+cat(renv::diagnostics())
+```
+```
