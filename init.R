@@ -18,3 +18,10 @@ vt_use_test_code("dplyr/tests")
 
 vt_validate_report()
 
+# New pkg
+install.packages("shiny")
+vt_use_req("shiny/requirements")
+vt_use_test_case("shiny/cases")
+vt_use_test_code("shiny/tests")
+renv::snapshot()
+vt_validate_report()
