@@ -114,7 +114,7 @@ vt_scrape_coverage_matrix() %>%
 ## Requirement Assessments
 
 ```{r risk}
-vt_scrape_risk_assessment() %>% 
+vt_scrape_risk_assessment() %>%
   vt_kable_risk_assessment()
 ```
 
