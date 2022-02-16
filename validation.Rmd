@@ -33,6 +33,7 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(riskmetric)
   library(renv)
+  library(testthat)
 })
 
 opts_chunk$set(
@@ -102,7 +103,8 @@ vt_scrape_test_code_editors() %>%
 
 ## Traceability
 
-```{r traceability}
+```{r traceability, fig.width=20}
+## TODO: Make figure wider
 vt_scrape_coverage_matrix() %>% 
  vt_kable_coverage_matrix()
 ```

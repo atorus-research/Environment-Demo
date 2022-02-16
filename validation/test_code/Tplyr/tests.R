@@ -1,26 +1,19 @@
 
 # Test setup
 library(Tplyr)
+library(rlang)
 
 #' @editor Eli Miller
 #' @editDate 2021-12-07
-test_that("3.1", {
+test_that("2", {
+  test_1 <- tplyr_table(safetyData::adam_adsl, TRT01P)
+  
 
-  res <- withr::with_envvar(
-    list(NOT_CRAN = FALSE),
-    withr::with_tempdir(
-      tools::testInstalledPackage("Tplyr", types = "tests")
-    )
-  )
-
-  expect_equal(res, 0)
+  #programmatic check(s)
+  testthat::expect_equal(safetyData::adam_adsl, Tplyr::pop_data(test_1), label = "T.1")
+  testthat::expect_equal(expr(TRT01P), quo_get_expr(test_1$treat_var), label = "T.1")
 })
 
-#' @editor Eli Miller
-#' @editDate 2021-12-07
-test_that("3.2",{
-  expect_silent(tplyr_table(mtcars, gear))
-})
 
 
 

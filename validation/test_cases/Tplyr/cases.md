@@ -1,12 +1,18 @@
-#' @title cases
+#' @title 2
 #' @editor Eli Miller
 #' @editDate 2022-01-12
 #' @coverage
-#' 3.1: 3.1
-#' 3.2: 3.2
+#' 2.1: 2.1
+#' 2.1: 2.2
 
-+ Setup: Load in `Tplyr` packages.
+### Setup Instructions
 
-+ 3.1: the function `tools::testInstalledPackage("Tplyr")` returns a 0
++ Load in `Tplyr` packages.
 
-+ 3.2: Using `Tplyr::tplyr_table` create a table with the `mtcars` dataset as the target and `gear` as the target variable.
+### Tplyr Test Cases
+
++ 2.1: Verify target dataset in table is the same as specified
+
++ 2.2: Verify treatment variable in table is same as specified
+
+### Tplyr Test Results
